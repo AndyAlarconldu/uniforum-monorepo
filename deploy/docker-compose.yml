@@ -1,26 +1,17 @@
 version: "3.9"
 
 services:
-  identity:
-    image: identity-service:latest
-    container_name: identity-service
+  postgres:
+    image: postgres:15
+    container_name: uniforum-postgres
+    environment:
+      POSTGRES_USER: uniforum
+      POSTGRES_PASSWORD: uniforum
+      POSTGRES_DB: identity_db
     ports:
-      - "8001:8000"
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-  user:
-    image: user-service:latest
-    container_name: user-service
-    ports:
-      - "8002:8000"
-
-  academic:
-    image: academic-structure-service:latest
-    container_name: academic-service
-    ports:
-      - "8003:8000"
-
-  web:
-    image: web:latest
-    container_name: frontend-web
-    ports:
-      - "80:80"
+volumes:
+  postgres_data:
