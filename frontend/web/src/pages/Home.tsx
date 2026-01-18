@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../App.css";
 
 export default function Home() {
@@ -9,10 +10,18 @@ export default function Home() {
           alt="Foro universitario"
           className="hero-img"
         />
+
         <h2>UniForum</h2>
-        <p>Conecta, debate y comparte conocimiento universitario</p>
-        <button>Ingresar</button>
+        <p>
+          Conecta, debate y comparte conocimiento universitario de forma
+          sencilla.
+        </p>
+
+        <Link to="/login">
+          <button>Ingresar</button>
+        </Link>
       </div>
     </div>
   );
 }
+
