@@ -3,7 +3,12 @@ import psycopg2
 from fastapi import FastAPI
 from datetime import datetime
 
-app = FastAPI(title="Identity Service")
+
+app = FastAPI()
+
+@app.post("/login")
+def login():
+    return {"message": "Login endpoint"}
 
 DB_HOST = os.getenv("DB_HOST", "postgres")
 DB_NAME = os.getenv("DB_NAME", "uniforum")
