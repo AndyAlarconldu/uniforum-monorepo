@@ -3,11 +3,11 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15
-    container_name: uniforum-postgres
+    container_name: postgres
     environment:
+      POSTGRES_DB: uniforum
       POSTGRES_USER: uniforum
       POSTGRES_PASSWORD: uniforum
-      POSTGRES_DB: uniforum
     ports:
       - "5432:5432"
     volumes:
@@ -38,22 +38,6 @@ services:
       DB_PASSWORD: uniforum
     depends_on:
       - postgres
-
-  mongo:
-    image: mongo:6
-    container_name: uniforum-mongo
-    ports:
-      - "27017:27017"
-
-  post-service:
-    build: ../backend/services/post-service
-    container_name: post-service
-    ports:
-      - "8004:8000"
-    environment:
-      MONGO_URI: mongodb://mongo:27017
-    depends_on:
-      - mongo
 
 volumes:
   postgres_data:
