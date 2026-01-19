@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+from app.core.security import get_current_user
 
 from .database import SessionLocal, engine
 from . import models, schemas, crud
@@ -36,3 +37,11 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "User deleted"}
+
+@app.get("/users/me")
+def read_current_user(current_user=Depends(get_current_user)):
+    return {
+        "message": "Acceso autorizado",
+        "user": current_user
+    }
+
