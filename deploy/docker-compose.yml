@@ -13,6 +13,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+    mongo:
+     image: mongo:7
+     container_name: mongo
+     ports:
+      - "27017:27017"
+     volumes:
+      - mongo_data:/data/db
+
   identity-service:
     build: ../backend/services/identity-service
     container_name: identity-service
@@ -23,6 +31,7 @@ services:
       DB_NAME: uniforum
       DB_USER: uniforum
       DB_PASSWORD: uniforum
+      JWT_SECRET: uniforum-secret-key
     depends_on:
       - postgres
 
@@ -36,6 +45,21 @@ services:
       DB_NAME: uniforum
       DB_USER: uniforum
       DB_PASSWORD: uniforum
+      JWT_SECRET: uniforum-secret-key
+    depends_on:
+      - postgres
+
+  forum-service:
+    build: ../backend/services/forum-service
+    container_name: forum-service
+    ports:
+      - "8003:8000"
+    environment:
+      DB_HOST: postgres
+      DB_NAME: uniforum
+      DB_USER: uniforum
+      DB_PASSWORD: uniforum
+      JWT_SECRET: uniforum-secret-key
     depends_on:
       - postgres
 
