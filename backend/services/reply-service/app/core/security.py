@@ -1,19 +1,40 @@
-from fastapi import Request
+import os
+from jose import jwt, JWTError
+from fastapi import Depends, HTTPException, Request
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-def get_current_user(request: Request):
-    """
-    Auth mock estable.
-    - Si viene Authorization → la ignora por ahora
-    - Si no viene → no falla
-    - Sirve para Swagger, Docker, AWS, Terraform
-    """
+SECRET_KEY = os.getenv("JWT_SECRET", "uniforum-secret-key")
+ALGORITHM = "HS256"
 
-    auth_header = request.headers.get("Authorization")
+security = HTTPBearer(auto_error=False)
 
-    # Mock user fijo (estable)
-    return {
-        "id": "mock-user-123",
-        "email": "mockuser@uniforum.com",
-        "role": "user",
-        "authorization": auth_header
-    }
+def get_current_user(
+    request: Request,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    # SIN TOKEN → USUARIO MOCK
+    if credentials is None:
+        return {
+            "id": "mock-user-123",
+            "email": "mockuser@uniforum.com",
+            "role": "user",
+            "auth": "mock"
+        }
+
+    # CON TOKEN → VALIDAR JWT
+    try:
+        payload = jwt.decode(
+            credentials.credentials,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        return {
+            "id": payload.get("sub"),
+            "email": payload.get("email"),
+            "role": payload.get("role", "user"),
+            "auth": "jwt"
+        }
+
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido")

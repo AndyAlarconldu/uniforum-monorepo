@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Depends
 from datetime import datetime
-from bson import ObjectId
 
 from app.database import replies_collection
 from app.schemas import ReplyCreate, ReplyResponse
