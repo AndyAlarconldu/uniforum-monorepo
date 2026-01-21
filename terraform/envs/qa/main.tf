@@ -34,6 +34,13 @@ module "alb" {
   security_group_id   = module.security.sg_app_id
 }
 
+module "ecs" {
+  source = "../../modules/ecs"
+
+  project_name = var.project_name
+  env          = var.env
+}
+
 
 
 
