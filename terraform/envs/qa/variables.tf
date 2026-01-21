@@ -1,3 +1,7 @@
+# =========================
+# VARIABLES GENERALES
+# =========================
+
 variable "project_name" {
   type = string
 }
@@ -6,47 +10,39 @@ variable "env" {
   type = string
 }
 
-variable "aws_region" {
-  type = string
-}
+# =========================
+# RED (NETWORK)
+# =========================
 
 variable "vpc_cidr" {
   type = string
-}
-
-variable "azs" {
-  type = list(string)
 }
 
 variable "public_subnet_cidrs" {
   type = list(string)
 }
 
-variable "private_subnet_cidrs" {
+variable "azs" {
   type = list(string)
 }
 
-variable "my_ip_cidr" {
+# =========================
+# EC2
+# =========================
+
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+}
+
+# =========================
+# DOCKER / MICROSERVICIOS
+# =========================
+
+variable "docker_identity_image" {
   type = string
 }
 
-variable "key_name" {
+variable "docker_user_image" {
   type = string
-}
-
-variable "dockerhub_user" {
-  type = string
-}
-
-variable "dockerhub_tag" {
-  type = string
-}
-
-variable "db_username" {
-  type = string
-}
-
-variable "db_password" {
-  type      = string
-  sensitive = true
 }

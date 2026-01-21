@@ -1,55 +1,25 @@
+
+
 resource "aws_launch_template" "this" {
-  name_prefix   = "${var.project_name}-${var.env}-lt-"
-  image_id      = data.aws_ami.amzn2.id
+  name_prefix   = "${var.project_name}-${var.env}-lt"
+  image_id      = "ami-0c02fb55956c7d316"
   instance_type = var.instance_type
-  key_name      = var.key_name
 
-  vpc_security_group_ids = [var.sg_app_id]
+  user_data = base64encode(file("${path.module}/user_data.sh"))
 
-  user_data = base64encode(<<-EOF
-    #!/bin/bash
-    yum update -y
-    amazon-linux-extras install docker -y
-    systemctl start docker
-    systemctl enable docker
-    usermod -aG docker ec2-user
-
-    docker pull andyxalarcon/uniforum-frontend:qa
-    docker run -d --restart=always -p 80:80 andyxalarcon/uniforum-frontend:qa
-  EOF
-  )
-
-
-
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name = "${var.project_name}-${var.env}-app"
-    }
-  }
-}
-
-data "aws_ami" "amzn2" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [var.security_group_id]
   }
 }
 
 resource "aws_autoscaling_group" "this" {
-  name                = "${var.project_name}-${var.env}-asg"
-  min_size            = 1
-  max_size            = 2
-  desired_capacity    = 1
-  vpc_zone_identifier = var.private_subnet_ids
+  desired_capacity = 1
+  min_size         = 1
+  max_size         = 2
 
-  health_check_type         = "ELB"
-  health_check_grace_period = 120
-
-  target_group_arns = [var.target_group_arn]
+  vpc_zone_identifier = var.public_subnet_ids
+  target_group_arns  = [var.target_group_arn]
 
   launch_template {
     id      = aws_launch_template.this.id
@@ -58,7 +28,18 @@ resource "aws_autoscaling_group" "this" {
 
   tag {
     key                 = "Name"
-    value               = "${var.project_name}-${var.env}-asg"
+    value               = "${var.project_name}-${var.env}-app"
     propagate_at_launch = true
   }
+
+  tag {
+    key                 = "Environment"
+    value               = var.env
+    propagate_at_launch = true
+  }
+
 }
+
+
+  
+

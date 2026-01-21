@@ -1,12 +1,9 @@
 resource "aws_lb" "this" {
   name               = "${var.project_name}-${var.env}-alb"
+  internal           = false
   load_balancer_type = "application"
-  subnets            = var.public_subnet_ids
   security_groups    = [var.security_group_id]
-
-  tags = {
-    Name = "${var.project_name}-${var.env}-alb"
-  }
+  subnets            = var.public_subnet_ids
 }
 
 resource "aws_lb_target_group" "app" {
@@ -14,19 +11,6 @@ resource "aws_lb_target_group" "app" {
   port     = 8000
   protocol = "HTTP"
   vpc_id  = var.vpc_id
-
-  health_check {
-    path                = "/docs"
-    protocol            = "HTTP"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-  }
-
-  tags = {
-    Name = "${var.project_name}-${var.env}-tg"
-  }
 }
 
 resource "aws_lb_listener" "http" {
