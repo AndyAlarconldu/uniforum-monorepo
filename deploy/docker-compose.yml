@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:15
@@ -71,6 +69,17 @@ services:
     environment:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DB: postdb
+      JWT_SECRET: uniforum-secret-key
+    depends_on:
+      - mongo
+
+  reply-service:
+    build: ../backend/services/reply-service
+    container_name: reply-service
+    ports:
+      - "8005:8000"
+    environment:
+      MONGO_URL: mongodb://mongo:27017
       JWT_SECRET: uniforum-secret-key
     depends_on:
       - mongo
