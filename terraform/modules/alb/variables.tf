@@ -1,8 +1,19 @@
-variable "project_name" {}
-variable "env" {}
+variable "project_name" {
+  type = string
+}
 
-variable "vpc_id" {}
+variable "env" {
+  type = string
+}
+
+variable "vpc_id" {
+  type = string
+}
+
 variable "public_subnet_ids" {
   type = list(string)
 }
-variable "security_group_id" {}
+
+variable "security_group_id" {
+  type = string
+}
