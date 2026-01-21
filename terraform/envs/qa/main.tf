@@ -23,3 +23,14 @@ module "security" {
   vpc_id     = module.network.vpc_id
   my_ip_cidr = var.my_ip_cidr
 }
+
+module "alb" {
+  source = "../../modules/alb"
+
+  project_name        = var.project_name
+  env                 = var.env
+  vpc_id              = module.network.vpc_id
+  public_subnet_ids = module.network.public_subnet_ids
+  security_group_id   = module.security.sg_app_id
+}
+
