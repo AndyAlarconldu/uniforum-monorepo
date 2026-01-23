@@ -4,7 +4,14 @@ yum install -y docker
 systemctl start docker
 systemctl enable docker
 
-sleep 10
+echo "Starting microservices..." > /var/log/microservices.log
 
-docker run -d -p 8000:8000 --name identity ${IDENTITY_IMAGE}
-docker run -d -p 8001:8000 --name user ${USER_IMAGE}
+docker run -d \
+  --name identity \
+  -p 8000:8000 \
+  ${IDENTITY_IMAGE} >> /var/log/microservices.log 2>&1
+
+docker run -d \
+  --name user \
+  -p 8001:8000 \
+  ${USER_IMAGE} >> /var/log/microservices.log 2>&1
