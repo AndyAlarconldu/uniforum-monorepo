@@ -80,3 +80,8 @@ jobs:
         run: |
           docker build -t andyxalarcon/academic-structure-service:qa backend/services/academic-structure-service
           docker push andyxalarcon/academic-structure-service:qa
+  
+      - name: Run tests
+        run: |
+          pip install -r requirements.txt
+          pytest
