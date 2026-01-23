@@ -9,6 +9,9 @@ from .core.security import get_current_user
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Forum Service")
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 def get_db():
     db = SessionLocal()

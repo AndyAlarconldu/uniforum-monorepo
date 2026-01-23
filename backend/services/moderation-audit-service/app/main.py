@@ -7,6 +7,9 @@ from app.schemas import AuditCreate, AuditResponse
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Moderation & Audit Service")
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 # DB dependency
 def get_db():

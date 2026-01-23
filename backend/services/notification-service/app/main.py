@@ -3,14 +3,14 @@ from pydantic import BaseModel
 from app.redis_client import redis_client
 
 app = FastAPI(title="Notification Service")
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 class NotificationCreate(BaseModel):
     message: str
 
 # 🔹 Health
-@app.get("/health")
-def health():
-    return {"status": "ok"}
 
 # 🔹 Crear notificación
 @app.post("/notifications")
