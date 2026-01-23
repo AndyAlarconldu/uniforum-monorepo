@@ -116,6 +116,33 @@ services:
    depends_on:
     - redis
 
+  search-service:
+   image: andyxalarcon/search-service:qa
+   build:
+    context: ../backend/services/search-service
+   container_name: search-service
+   ports:
+    - "8008:8000"
+   environment:
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+   depends_on:
+    - redis
+
+  notification-service:
+   image: andyxalarcon/notification-service:qa
+   build:
+    context: ../backend/services/notification-service
+   container_name: notification-service
+   ports:
+    - "8009:8000"
+   environment:
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+   depends_on:
+    - redis
+
+
 
 
 
