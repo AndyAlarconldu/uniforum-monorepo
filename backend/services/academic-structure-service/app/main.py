@@ -7,6 +7,9 @@ from .models import Career
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Academic Structure Service")
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 def get_db():
     db = SessionLocal()

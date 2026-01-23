@@ -1,0 +1,82 @@
+name: Build & Push QA Microservices
+
+on:
+  push:
+    branches:
+      - qa
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # =====================
+      # AUTH / CORE SERVICES
+      # =====================
+
+      - name: Identity Service
+        run: |
+          docker build -t andyxalarcon/identity-service:qa backend/services/identity-service
+          docker push andyxalarcon/identity-service:qa
+
+      - name: User Service
+        run: |
+          docker build -t andyxalarcon/user-service:qa backend/services/user-service
+          docker push andyxalarcon/user-service:qa
+
+      - name: Forum Service
+        run: |
+          docker build -t andyxalarcon/forum-service:qa backend/services/forum-service
+          docker push andyxalarcon/forum-service:qa
+
+      # =====================
+      # CONTENT SERVICES
+      # =====================
+
+      - name: Post Service
+        run: |
+          docker build -t andyxalarcon/post-service:qa backend/services/post-service
+          docker push andyxalarcon/post-service:qa
+
+      - name: Reply Service
+        run: |
+          docker build -t andyxalarcon/reply-service:qa backend/services/reply-service
+          docker push andyxalarcon/reply-service:qa
+
+      - name: Reaction Service
+        run: |
+          docker build -t andyxalarcon/reaction-service:qa backend/services/reaction-service
+          docker push andyxalarcon/reaction-service:qa
+
+      # =====================
+      # SUPPORT SERVICES
+      # =====================
+
+      - name: Search Service
+        run: |
+          docker build -t andyxalarcon/search-service:qa backend/services/search-service
+          docker push andyxalarcon/search-service:qa
+
+      - name: Notification Service
+        run: |
+          docker build -t andyxalarcon/notification-service:qa backend/services/notification-service
+          docker push andyxalarcon/notification-service:qa
+
+      - name: Moderation Audit Service
+        run: |
+          docker build -t andyxalarcon/moderation-audit-service:qa backend/services/moderation-audit-service
+          docker push andyxalarcon/moderation-audit-service:qa
+
+      - name: Academic Structure Service
+        run: |
+          docker build -t andyxalarcon/academic-structure-service:qa backend/services/academic-structure-service
+          docker push andyxalarcon/academic-structure-service:qa
