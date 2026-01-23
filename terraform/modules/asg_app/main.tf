@@ -1,11 +1,15 @@
-
-
 resource "aws_launch_template" "this" {
   name_prefix   = "${var.project_name}-${var.env}-lt"
   image_id      = "ami-0c02fb55956c7d316"
   instance_type = var.instance_type
 
-  user_data = base64encode(file("${path.module}/user_data.sh"))
+  user_data = base64encode(templatefile(
+    "${path.module}/user_data.sh",
+    {
+      IDENTITY_IMAGE = var.docker_identity_image
+      USER_IMAGE     = var.docker_user_image
+    }
+  ))
 
   network_interfaces {
     associate_public_ip_address = true
@@ -16,7 +20,7 @@ resource "aws_launch_template" "this" {
 resource "aws_autoscaling_group" "this" {
   desired_capacity = 1
   min_size         = 1
-  max_size         = 2
+  max_size         = 3
 
   vpc_zone_identifier = var.public_subnet_ids
   target_group_arns  = [var.target_group_arn]
@@ -37,9 +41,4 @@ resource "aws_autoscaling_group" "this" {
     value               = var.env
     propagate_at_launch = true
   }
-
 }
-
-
-  
-
