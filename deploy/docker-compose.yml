@@ -19,6 +19,13 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  redis:
+   image: redis:7
+   container_name: redis
+   ports:
+    - "6379:6379"
+
+
   identity-service:
     build: ../backend/services/identity-service
     container_name: identity-service
@@ -83,6 +90,35 @@ services:
       JWT_SECRET: uniforum-secret-key
     depends_on:
       - mongo
+
+  academic-structure-service:
+    build: ../backend/services/academic-structure-service
+    container_name: academic-structure-service
+    ports:
+      - "8006:8000"
+    environment:
+      DB_HOST: postgres
+      DB_NAME: uniforum
+      DB_USER: uniforum
+      DB_PASSWORD: uniforum
+    depends_on:
+      - postgres
+
+  reaction-service:
+   image: andyxalarcon/reaction-service:qa
+   build: ../backend/services/reaction-service
+   container_name: andyx-reaction-service
+   ports:
+    - "8007:8000"
+   environment:
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+   depends_on:
+    - redis
+
+
+
+
 
 volumes:
   postgres_data:
