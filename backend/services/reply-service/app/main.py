@@ -6,6 +6,9 @@ from app.schemas import ReplyCreate, ReplyResponse
 from app.core.security import get_current_user
 
 app = FastAPI(title="Reply Service")
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
 @app.post("/replies", response_model=ReplyResponse)

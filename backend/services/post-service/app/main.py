@@ -6,6 +6,9 @@ from app.schemas import PostCreate, PostResponse
 from app.core.security import get_current_user
 
 app = FastAPI(title="Post Service")
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
 @app.post("/posts", response_model=PostResponse)

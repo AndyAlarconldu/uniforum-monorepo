@@ -7,4 +7,10 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Identity Service")
 
+# 🔴 ENDPOINT OBLIGATORIO PARA AWS
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+# Rutas normales
 app.include_router(auth.router)
