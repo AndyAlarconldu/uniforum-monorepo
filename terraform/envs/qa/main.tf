@@ -29,6 +29,5 @@ module "asg_app" {
   public_subnet_ids     = module.network.public_subnet_ids
   security_group_id     = module.security.sg_id
   target_group_arn      = module.alb.target_group_arn
-  docker_identity_image = var.docker_identity_image
-  docker_user_image     = var.docker_user_image
+  docker_images     = var.docker_images
 }

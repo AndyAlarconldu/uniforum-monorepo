@@ -1,0 +1,29 @@
+# ⚙️ Backend Services - Microservices Ecosystem
+
+This directory contains the source code for all the microservices that power the UNIFORUM platform.
+
+## 🧩 Architecture Overview
+
+The backend follows the **API Gateway Pattern**. All external requests are handled by **Nginx**, which acts as a reverse proxy, routing traffic to the appropriate internal microservice.
+
+## 📋 Service Catalog
+
+| Service Name | Port (Internal) | Database Type | Description |
+| :--- | :--- | :--- | :--- |
+| **Identity Service** | 8001 | PostgreSQL | Authentication, JWT Token generation, and Registration. |
+| **Academic Service** | 8002 | PostgreSQL | Manages faculties, careers, and academic data. |
+| **Forum Service** | 8003 | PostgreSQL | Handles discussion boards and forum topics. |
+| **Post Service** | 8004 | **MongoDB** | Manages high-volume user posts (NoSQL). |
+| **Reply Service** | 8005 | PostgreSQL | Handles nested replies and comments. |
+| **Reaction Service** | 8006 | **Redis** | Real-time likes and reactions (In-Memory). |
+| **Search Service** | 8007 | Redis (Cache) | Optimized search engine with caching. |
+| **Notification Service**| 8008 | Queue/Logic | Asynchronous notification handling. |
+| **Moderation Service** | 8009 | Logs | Auditing and content moderation logs. |
+| **User Service** | 8010 | PostgreSQL | User profile management. |
+
+## 🛠️ Tech Stack
+
+* **Language:** Python 3.9+
+* **Framework:** FastAPI / Flask (depending on service)
+* **Containerization:** Docker
+* **Gateway:** Nginx

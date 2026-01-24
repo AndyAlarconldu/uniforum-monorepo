@@ -1,15 +1,24 @@
 resource "aws_launch_template" "this" {
   name_prefix   = "${var.project_name}-${var.env}-lt"
-  image_id      = "ami-0c02fb55956c7d316"
+  image_id      = "ami-0c02fb55956c7d316" # Amazon Linux 2
   instance_type = var.instance_type
 
   user_data = base64encode(templatefile(
-    "${path.module}/user_data.sh",
-    {
-      IDENTITY_IMAGE = var.docker_identity_image
-      USER_IMAGE     = var.docker_user_image
-    }
-  ))
+  "${path.module}/user_data.sh",
+  {
+    IDENTITY     = var.docker_images["identity"]
+    USER         = var.docker_images["user"]
+    FORUM        = var.docker_images["forum"]
+    POST         = var.docker_images["post"]
+    REPLY        = var.docker_images["reply"]
+    ACADEMIC     = var.docker_images["academic"]
+    REACTION     = var.docker_images["reaction"]
+    SEARCH       = var.docker_images["search"]
+    NOTIFICATION = var.docker_images["notification"]
+    MODERATION   = var.docker_images["moderation"]
+  }
+))
+
 
   network_interfaces {
     associate_public_ip_address = true
@@ -33,12 +42,6 @@ resource "aws_autoscaling_group" "this" {
   tag {
     key                 = "Name"
     value               = "${var.project_name}-${var.env}-app"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "Environment"
-    value               = var.env
     propagate_at_launch = true
   }
 }

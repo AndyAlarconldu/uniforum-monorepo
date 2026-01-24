@@ -22,10 +22,10 @@ variable "target_group_arn" {
   type = string
 }
 
-variable "docker_identity_image" {
-  type = string
-}
 
-variable "docker_user_image" {
-  type = string
+
+# Borra el bloque viejo de "docker_images" y pega este:
+variable "docker_images" {
+  description = "Mapa de imágenes Docker"
+  type        = map(string)
 }

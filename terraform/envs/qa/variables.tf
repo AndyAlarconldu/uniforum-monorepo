@@ -7,14 +7,12 @@ variable "env" {
 }
 
 variable "instance_type" {
-  type    = string
-  default = "t3.micro"
+  description = "Tipo de instancia EC2"
+  type        = string
+  default     = "t3.medium"
 }
 
-variable "docker_identity_image" {
-  type = string
-}
-
-variable "docker_user_image" {
-  type = string
+variable "docker_images" {
+  description = "Docker images for all microservices"
+  type        = map(string)
 }

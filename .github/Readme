@@ -1,0 +1,26 @@
+# 🔄 CI/CD Pipelines
+
+This folder contains the **GitHub Actions** workflows used for Continuous Integration and Continuous Deployment.
+
+## 🤖 Workflows
+
+### `ci-pipeline.yml`
+* **Trigger:** Push to `main` branch.
+* **Jobs:**
+    1.  **Linting:** Checks Python code quality (Flake8/Black).
+    2.  **Testing:** Runs unit tests for microservices.
+    3.  **Build:** Builds Docker images for the modified services.
+
+### `cd-pipeline.yml`
+* **Trigger:** Release tag or manual dispatch.
+* **Action:**
+    1.  Logs into AWS ECR (Elastic Container Registry).
+    2.  Pushes Docker images to the registry.
+    3.  Connects to the EC2 instance via SSH and updates the running containers.
+
+## 🔑 Secrets
+The pipelines rely on the following GitHub Repository Secrets:
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `EC2_SSH_KEY`
+* `HOST_DNS`
