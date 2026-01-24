@@ -1,0 +1,50 @@
+# ☁️ Infrastructure as Code (Terraform)
+
+This directory contains the Terraform configuration used to provision the AWS infrastructure. It follows a **Modular Architecture** to support multiple environments (QA, Prod).
+
+## 📂 Infrastructure Structure
+
+The code is organized into reusable modules and environment-specific implementations:
+
+### 🧩 Modules (`/modules`)
+Independent resources that are called by the environments:
+
+* **`network`**: VPC, Subnets (Public/Private), Internet Gateway, Route Tables.
+* **`security`**: Security Groups (Firewall rules) for ALB, EC2, and databases.
+* **`alb`**: Application Load Balancer to distribute traffic.
+* **`api_gateway`**: Configuration for the Nginx entry point.
+* **`asg_app`**: Auto Scaling Group for the application instances (EC2).
+* **`bastion`**: Jump host for secure SSH access.
+* **`rds_postgres`**: Managed Relational Database Service (PostgreSQL).
+* **`redis`**: ElastiCache or self-managed Redis instance.
+
+### 🌍 Environments (`/envs`)
+State files and variable definitions for each deployment stage:
+
+* **`dev` / `qa`**: Testing environments.
+* **`prod`**: Production environment.
+
+## 🚀 How to Deploy
+
+1.  **Navigate to an environment:**
+    ```bash
+    cd terraform/envs/qa
+    ```
+
+2.  **Initialize Terraform:**
+    ```bash
+    terraform init
+    ```
+
+3.  **Preview Changes:**
+    ```bash
+    terraform plan
+    ```
+
+4.  **Apply Infrastructure:**
+    ```bash
+    terraform apply
+    ```
+
+## 🔐 Credentials
+Ensure you have configured your AWS credentials using `aws configure` before running these scripts.

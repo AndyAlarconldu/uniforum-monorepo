@@ -1,0 +1,12 @@
+# 📝 Post Service
+
+This microservice handles the creation and retrieval of user posts. It is designed for high-volume data storage.
+
+## 🛠️ Technology
+* **Framework:** Python (FastAPI)
+* **Database:** **MongoDB** (NoSQL Document Store)
+* **Reasoning:** MongoDB allows flexible schema design for posts that may vary in structure and size.
+
+## 🔗 Endpoints
+* `POST /posts`: Create a new post.
+* `GET /posts`: Retrieve all posts.

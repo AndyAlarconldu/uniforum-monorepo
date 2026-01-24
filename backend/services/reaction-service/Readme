@@ -1,0 +1,12 @@
+# ❤️ Reaction Service
+
+This microservice manages user reactions (Likes) in real-time.
+
+## 🛠️ Technology
+* **Framework:** Python (FastAPI)
+* **Database:** **Redis** (In-Memory Key-Value Store)
+* **Reasoning:** Redis provides sub-millisecond latency, making it ideal for counters like "Likes" that require high read/write speeds.
+
+## 🔗 Endpoints
+* `POST /reactions/{id}/like`: Increment like counter.
+* `GET /reactions/{id}`: Get total likes for a post.
